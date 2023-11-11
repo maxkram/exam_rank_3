@@ -1,4 +1,6 @@
-#include "get_next_line.h"
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 char *get_next_line(int fd)
 {
@@ -8,7 +10,7 @@ char *get_next_line(int fd)
 
     if (BUFFER_SIZE <= 0)
         return (NULL);
-    char *buffer = malloc(100000); // check before the current BUFFER_SIZE and then malloc
+    char *buffer = malloc(100000);
     while ((rd = read(fd, &character, BUFFER_SIZE - BUFFER_SIZE + 1)) > 0)
     {
         buffer[i++] = character;
@@ -20,3 +22,20 @@ char *get_next_line(int fd)
         return (free(buffer), NULL);
     return (buffer);
 }
+
+#include<fcntl.h>
+
+int main(int ac, char **av)
+{
+    (void)ac;
+    char *line = NULL;
+    int fd = open(av[1], O_RDONLY);
+    while((line = get_next_line(fd)))
+    {
+        printf("%s", line);
+        free(line);
+    }
+    return(0);
+}
+
+// gcc -Wall -Werror -Wextra get_next_line1.c -D BUFFER_SIZE=10 && ./a.out get_next_line1.c
