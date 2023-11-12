@@ -22,27 +22,42 @@ char	*get_next_line(int fd)
 #include <fcntl.h>
 #include <stdio.h>
 
-int	main(int argc, char **argv)
-{
-	int		fd;
-	int		line;
-	char	*string;
+// int	main(int argc, char **argv)
+// {
+// 	int		fd;
+// 	int		line;
+// 	char	*string;
 
-	line = 1;
-	string = NULL;
-	if (argc == 2)
-	{
-		fd = open(argv[1], O_RDONLY);
-		string = get_next_line(fd);
-		while (string != NULL)
-		{
-			printf("Line %d - %s ", line, string);
-			string = get_next_line(fd);
-			line++;
-		}
-		if (!string)
-			printf("Line %d - (null) EOF", line);
-		close(fd);
-	}
-	return (0);
+// 	line = 1;
+// 	string = NULL;
+// 	if (argc == 2)
+// 	{
+// 		fd = open(argv[1], O_RDONLY);
+// 		string = get_next_line(fd);
+// 		while (string != NULL)
+// 		{
+// 			printf("Line %d - %s ", line, string);
+// 			string = get_next_line(fd);
+// 			line++;
+// 		}
+// 		if (!string)
+// 			printf("Line %d - (null) EOF", line);
+// 		close(fd);
+// 	}
+// 	return (0);
+// }
+
+#include<fcntl.h>
+
+int main(int ac, char **av)
+{
+    (void)ac;
+    char *line = NULL;
+    int fd = open(av[1], O_RDONLY);
+    while((line = get_next_line(fd)))
+    {
+        printf("%s", line);
+        free(line);
+    }
+    return(0);
 }
